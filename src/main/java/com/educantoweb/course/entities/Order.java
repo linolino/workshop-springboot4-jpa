@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.time.Instant;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,22 +16,24 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name ="tb_order")
+@Table(name = "tb_order")
 public class Order implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Instant momentO;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant moment;
+
 	@ManyToOne
-	@JoinColumn(name ="client_id")
+	@JoinColumn(name = "client_id")
 	private User client;
 
-	public Order(Long id, Instant momentO, User client) {
+	public Order(Long id, Instant moment, User client) {
 
 		this.id = id;
-		this.momentO = momentO;
+		this.moment = moment;
 		this.client = client;
 	}
 
@@ -44,12 +49,12 @@ public class Order implements Serializable {
 		this.id = id;
 	}
 
-	public Instant getMomentO() {
-		return momentO;
+	public Instant getmoment() {
+		return moment;
 	}
 
-	public void setMomentO(Instant momentO) {
-		this.momentO = momentO;
+	public void setmoment(Instant moment) {
+		this.moment = moment;
 	}
 
 	public User getclient() {
@@ -79,7 +84,7 @@ public class Order implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Order [id=" + id + ", momentO=" + momentO + ", client=" + client + "]";
+		return "Order [id=" + id + ", moment=" + moment + ", client=" + client + "]";
 	}
 
 }
